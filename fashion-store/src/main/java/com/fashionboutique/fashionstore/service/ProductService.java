@@ -11,7 +11,8 @@ public interface ProductService {
     List<Product> getAllProducts();
     Product getProductById(Long id);
     void addProduct(ProductDTO productDTO);
-    void updateProduct(Product updatedProduct);
+    void updateProduct(Long id, ProductDTO updatedProductDto);
     void deleteProduct(Long id);
     Product convertToEntity(ProductDTO productDTO);
+    Product convertToEntityId(Long id, ProductDTO productDTO);
 }

@@ -31,8 +31,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(Product updatedProduct) {
-        productRepository.save(updatedProduct);
+    public void updateProduct(Long id, ProductDTO updatedProductDTO) {
+        Product product = convertToEntityId(id, updatedProductDTO);
+        productRepository.save(product);
     }
 
     @Override
@@ -42,6 +43,15 @@ public class ProductServiceImpl implements ProductService {
 
     public Product convertToEntity(ProductDTO productDTO) {
         Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setColor(productDTO.getColor());
+        product.setSize(productDTO.getSize());
+        product.setPrice(productDTO.getPrice());
+        return product;
+    }
+    public Product convertToEntityId(Long id, ProductDTO productDTO) {
+        Product product = new Product();
+        product.setId(id);
         product.setName(productDTO.getName());
         product.setColor(productDTO.getColor());
         product.setSize(productDTO.getSize());

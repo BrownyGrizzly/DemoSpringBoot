@@ -21,4 +21,3 @@ public class Product {
     private String size;
     private double price;
 }
-
