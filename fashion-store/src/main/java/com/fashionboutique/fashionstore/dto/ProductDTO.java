@@ -20,4 +20,5 @@ public class ProductDTO {
     @NotNull(message = "Price is mandatory")
     @PositiveOrZero(message = "Price must be greater than or equal to 0")
     private Double price;
+    private Long categoryId;
 }
