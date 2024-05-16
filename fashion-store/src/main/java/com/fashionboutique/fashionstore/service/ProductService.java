@@ -2,6 +2,8 @@ package com.fashionboutique.fashionstore.service;
 
 import com.fashionboutique.fashionstore.dto.ProductDTO;
 import com.fashionboutique.fashionstore.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,4 +15,6 @@ public interface ProductService {
     void addProduct(ProductDTO productDTO);
     void updateProduct(Long id, ProductDTO updatedProductDto);
     void deleteProduct(Long id);
+    List<Product> searchProducts(Long categoryId, Double priceMin);
+    Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable);
 }

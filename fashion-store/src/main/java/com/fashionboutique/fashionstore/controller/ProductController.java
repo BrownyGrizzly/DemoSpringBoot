@@ -5,6 +5,9 @@ import com.fashionboutique.fashionstore.exception.ProductNotFoundException;
 import com.fashionboutique.fashionstore.model.Product;
 import com.fashionboutique.fashionstore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -61,6 +64,18 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam Long categoryId, @RequestParam Double minPrice) {
+        return productService.searchProducts(categoryId, minPrice);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public Page<Product> getProductsByCategory(@PathVariable Long categoryId,
+                                               @RequestParam int page, @RequestParam int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.getProductsByCategoryId(categoryId, pageable);
     }
 }
 

@@ -7,8 +7,12 @@ import com.fashionboutique.fashionstore.model.Product;
 import com.fashionboutique.fashionstore.repository.CategoryRepository;
 import com.fashionboutique.fashionstore.repository.ProductRepository;
 import com.fashionboutique.fashionstore.service.ProductService;
+import com.fashionboutique.fashionstore.specification.ProductSpecifications;
 import com.fashionboutique.fashionstore.util.DtoEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +59,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Product> searchProducts(Long categoryId, Double minPrice) {
+        Specification<Product> spec = Specification.where(ProductSpecifications.hasCategory(categoryId))
+                .and(ProductSpecifications.hasPriceGreaterThan(minPrice));
+        return productRepository.findAll(spec);
+
+    }
+
+    @Override
+    public Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable) {
+        return productRepository.findByCategoryId(categoryId, pageable);
     }
 }
