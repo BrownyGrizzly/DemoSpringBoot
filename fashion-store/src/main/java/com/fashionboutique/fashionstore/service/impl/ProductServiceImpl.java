@@ -1,5 +1,6 @@
 package com.fashionboutique.fashionstore.service.impl;
 
+import com.fashionboutique.fashionstore.config.ProductRowMapper;
 import com.fashionboutique.fashionstore.dto.ProductDTO;
 import com.fashionboutique.fashionstore.mapper.ProductMapper;
 import com.fashionboutique.fashionstore.model.Category;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,9 +29,13 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private JdbcTemplate productJdbcTemplate;
+
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        String sql = "select * from product";
+        return productJdbcTemplate.query(sql, new ProductRowMapper());
     }
 
     @Override
@@ -62,11 +69,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> searchProducts(Long categoryId, Double minPrice) {
-        Specification<Product> spec = Specification.where(ProductSpecifications.hasCategory(categoryId))
+    public List<Product> searchProducts(String categoryName, Double minPrice) {
+        Specification<Product> spec = Specification.where(ProductSpecifications.hasCategory(categoryName))
                 .and(ProductSpecifications.hasPriceGreaterThan(minPrice));
         return productRepository.findAll(spec);
-
     }
 
     @Override

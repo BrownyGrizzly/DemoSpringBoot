@@ -15,6 +15,6 @@ public interface ProductService {
     void addProduct(ProductDTO productDTO);
     void updateProduct(Long id, ProductDTO updatedProductDto);
     void deleteProduct(Long id);
-    List<Product> searchProducts(Long categoryId, Double priceMin);
+    List<Product> searchProducts(String categoryName, Double priceMin);
     Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable);
 }

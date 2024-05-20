@@ -67,15 +67,15 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam Long categoryId, @RequestParam Double minPrice) {
-        return productService.searchProducts(categoryId, minPrice);
+    public List<Product> searchProducts(@RequestParam(required = false) String categoryName, @RequestParam(required = false) Double minPrice) {
+        return productService.searchProducts(categoryName, minPrice);
     }
 
     @GetMapping("/category/{categoryId}")
     public Page<Product> getProductsByCategory(@PathVariable Long categoryId,
-                                               @RequestParam int page, @RequestParam int size) {
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productService.getProductsByCategoryId(categoryId, pageable);
     }
 }
-
